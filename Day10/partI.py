@@ -36,7 +36,10 @@ def find_head_trails(map_):
                 head_trails += [(i, j)]
     return head_trails
 
-def search(map_, pos, figure):
+def search(map_, pos, figure, visited, counter):
+    global MAX_COUNTER
+    if counter==MAX_COUNTER:
+        raise ValueError("Maximum number of recursion attained.")
     output = 0
     visited[str(pos)] = 0
     if str(figure) == '9':
@@ -44,24 +47,25 @@ def search(map_, pos, figure):
     if figure_around(map_, pos, figure + 1, 'Up'):
         pos_next = (pos[0] - 1, pos[1])
         if str(pos_next) not in visited:
-            output += search(map_, pos_next, figure + 1)
+            output += search(map_, pos_next, figure + 1, visited, counter+1)
     if figure_around(map_, pos, figure + 1, 'Bottom'):
         pos_next = (pos[0] + 1, pos[1])
         if str(pos_next) not in visited:
-            output += search(map_, pos_next, figure + 1)
+            output += search(map_, pos_next, figure + 1, visited, counter+1)
     if figure_around(map_, pos, figure + 1, 'Right'):
         pos_next = (pos[0], pos[1] + 1)
         if str(pos_next) not in visited:
-            output += search(map_, pos_next, figure + 1)
+            output += search(map_, pos_next, figure + 1, visited, counter+1)
     if figure_around(map_, pos, figure + 1, 'Left'):
         pos_next = (pos[0], pos[1] - 1)
         if str(pos_next) not in visited:
-            output += search(map_, (pos[0], pos[1] - 1), figure + 1)
+            output += search(map_, (pos[0], pos[1] - 1), figure + 1, visited, counter+1)
     return output
    
-score = 0 
+score = 0
+MAX_COUNTER=10
 head_trails = find_head_trails(map_)
 for pos in head_trails:
     visited = {}
-    score += search(map_, pos, 0)
+    score += search(map_, pos, 0, visited, 0)
 print(score)
