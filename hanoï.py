@@ -24,4 +24,4 @@ n2 = ['B', 0]
 n3 = ['C', 0]
 hanoï(n1,n2,n3)
 
-je veux savoir ce que ca fait.
+ha
